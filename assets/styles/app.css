@@ -7,22 +7,21 @@ body {
 }
 
 h2 {
-  font-size: 1.25rem;
-  margin: 1rem 0.5rem;
+  font-size: .8rem;
+  margin: .5rem 0.5rem;
 }
 
 progress {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 80%;
+  width: 100%;
   height: 2rem;
   color: #ff0062;
   border: 1px solid #a927f5;
 }
 
-progress[value]::-webkit-progress-bar,
-progress[value] {
+progress[value]::-webkit-progress-bar, progress[value] {
   background-color: #eee;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 }
@@ -52,17 +51,28 @@ button:focus {
   outline: none;
 }
 
-button:hover,
-button:active {
+button:hover, button:active {
   background: #a927f5;
   border-color: #a927f5;
 }
 
-#health-levels,
-#controls {
+#health-levels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.health-bar {
+  width: 45%;
+}
+
+.right {
+  text-align: right;
+}
+
+#health-levels, #controls, #game {
   margin: 2rem auto;
   width: 30rem;
-  text-align: center;
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -71,7 +81,12 @@ button:active {
 
 #controls {
   display: flex;
-  flex-direction: column;
+}
+
+#controls button {
+  width: 20%;
+  font-size: .8rem;
+  padding: .5rem;
 }
 
 #bonus-life {
@@ -83,4 +98,105 @@ button:active {
   border-radius: 10px;
   text-align: center;
   margin: 0 0.5rem;
+}
+
+#game {
+  display: flex;
+  justify-content: space-between;
+  height: 20vh;
+  align-items: center;
+  position: relative;
+  z-index: -10;
+  overflow: hidden;
+}
+
+img.entity {
+  width: 6rem;
+  height: auto;
+  z-index: 100000;
+}
+
+.arrow {
+  width: 4rem;
+  height: auto;
+  position: absolute;
+  top: 9.5vh;
+  left: 5.8rem;
+  z-index: -1;
+  animation: shoot .2s linear;
+}
+
+@keyframes shoot {
+  0% {
+    left: calc(100% - 10rem);
+  }
+  100% {
+    left: 5.8rem;
+  }
+}
+
+.shake {
+  animation: shakeAnimate .2s linear;
+}
+
+@keyframes shakeAnimate{
+  0% {
+    transform: skewX(10deg);
+  }
+  33% {
+    transform: skewX(-10deg);
+  }
+  66% {
+    transform: skewX(10deg);
+  }
+  100% {
+    transform: skewX(10deg);
+  }
+}
+
+.shrink {
+  animation: shrinkAnimate .2s linear;
+}
+
+@keyframes shrinkAnimate{
+  0% {
+    transform: scale(1.05);
+  }
+  
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heal {
+  width: 8rem;
+  height: auto;
+  position: absolute;
+  top: -5vh;
+  right: 1rem;
+  z-index: -1;
+  animation: healAnimate .5s linear;
+}
+
+@keyframes healAnimate{
+  0% {
+    top: -5vh;
+  }
+  100% {
+    top: 20vh;
+  }
+}
+
+.healing {
+  
+  animation: healingAnimate .5s linear;
+}
+
+@keyframes healingAnimate{
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

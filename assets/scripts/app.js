@@ -11,7 +11,7 @@ const LOG_EVENT_PLAYER_HEAL = "PLAYER_HEAL";
 const LOG_EVENT_GAME_OVER = "GAME_OVER";
 
 function getMaxlifeValue() {
-    const enteredValue = prompt("Maximum life for you and the monster.");
+    const enteredValue = 100 || prompt("Maximum life for you and the monster.");
     const parsedValue = +enteredValue;
     if (isNaN(parsedValue) || parsedValue <= 0) {
         throw { message: "User input is not a number. Please enter a number." };
@@ -106,6 +106,7 @@ function attackMonster(mode) {
     const damage = dealMonsterDamage(maxDamage);
     currentMonsterHealth -= damage;
     writeToLog(logEvent, damage, currentMonsterHealth, currentPlayerHealth);
+    animateAttack(mode)
     endRound()
 }
 
@@ -119,8 +120,10 @@ function strongAttackHandler() {
 
 function healPlayerHealth() {
     let healValue;
-    if (currentPlayerHealth >= chosenMaxLife - HEAL_VALUE) {
+    if (currentPlayerHealth >= chosenMaxLife) {
         alert("You can't heal yourself more than max life")
+    }
+    else if (currentPlayerHealth >= chosenMaxLife - HEAL_VALUE) {
         healValue = chosenMaxLife - currentPlayerHealth;
     } else {
         healValue = HEAL_VALUE
@@ -129,6 +132,7 @@ function healPlayerHealth() {
     currentPlayerHealth += healValue;
     writeToLog(LOG_EVENT_PLAYER_HEAL, healValue, currentMonsterHealth, currentPlayerHealth);
     endRound()
+    animateHeal()
 }
 
 function printLogHandler() {
@@ -142,7 +146,45 @@ function printLogHandler() {
     }
 }
 
+
+function animateAttack(mode) {
+    let image = document.createElement("img");
+    const multi = (mode == MODE_STRONG_ATTACK)
+    let src = multi ? "./assets/images/arrowMulti.png" : "./assets/images/arrow.png"
+    image.setAttribute("src", src);
+    image.classList.add("arrow");
+    gameBoard.appendChild(image)
+
+    player.classList.add("shrink")
+
+    setTimeout(() => {
+        monster.classList.add("shake")
+    }, 210)
+
+    setTimeout(() => {
+        gameBoard.removeChild(image)
+        player.classList.remove("shrink")
+        monster.classList.remove("shake")
+    }, 500)
+}
+
+
+function animateHeal(mode) {
+    let image = document.createElement("img");
+    const multi = (mode == MODE_STRONG_ATTACK)
+    let src = "./assets/images/heal.png"
+    image.setAttribute("src", src);
+    image.classList.add("heal");
+    gameBoard.appendChild(image)
+
+    player.classList.add("healing")
+
+    setTimeout(() => {
+        gameBoard.removeChild(image)
+        player.classList.remove("healing")
+    }, 500)
+}
 attackBtn.addEventListener('click', attackHandler);
-strongAttackBtn.addEventListener('click', attackHandler);
+strongAttackBtn.addEventListener('click', strongAttackHandler);
 healBtn.addEventListener('click', healPlayerHealth);
 logBtn.addEventListener('click', printLogHandler);
