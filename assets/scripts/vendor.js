@@ -7,6 +7,10 @@ const strongAttackBtn = document.getElementById('strong-attack-btn');
 const healBtn = document.getElementById('heal-btn');
 const logBtn = document.getElementById('log-btn');
 
+const gameBoard= document.getElementById("game");
+const monster = document.getElementById("monster")
+const player = document.getElementById("player")
+
 function adjustHealthBars(maxLife) {
   monsterHealthBar.max = maxLife;
   monsterHealthBar.value = maxLife;
